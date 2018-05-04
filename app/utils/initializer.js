@@ -11,8 +11,8 @@ const postgreSqlInitialization = () => new Promise((resolve, reject) => {
     })
     .catch((err) => {
       logger.error(`PostgreSQL connection error: ${err}`);
-      reject(err)
-    })
+      reject(err);
+    });
 });
 
 module.exports.appReady = () => Promise.all([

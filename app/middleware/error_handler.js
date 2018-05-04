@@ -2,7 +2,7 @@ const httpErrors = require('http-errors');
 const httpStatus = require('http-status');
 const { pick } = require('lodash');
 
-const getErrorStatusCode = (err) =>
+const getErrorStatusCode = err =>
   err.status ||
   err.statusCode ||
   httpStatus.INTERNAL_SERVER_ERROR;

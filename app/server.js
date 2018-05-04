@@ -14,8 +14,6 @@ const initApp = () => {
     app.use(morgan(env));
   }
 
-
-
   app.use(notFound);
   app.use(errorHandler);
 
