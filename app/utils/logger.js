@@ -1,44 +1,42 @@
-'use strict';
-
 const config = require('nconf');
 const bunyan = require('bunyan');
 const PrettyStream = require('bunyan-prettystream');
+const fs = require('fs');
 
-const logConfig = config.get('log');
+const logsDir = config.get('logger:logsDir');
+if (!fs.existsSync(logsDir)) {
+  fs.mkdirSync(logsDir);
+}
 
-let prettyStdOut = new PrettyStream();
+const logConfig = config.get('logger');
+
+const prettyStdOut = new PrettyStream();
 prettyStdOut.pipe(process.stdout);
 
-if (process.env.NODE_ENV === 'dev') {
+const env = process.env.NODE_ENV || 'dev';
+if (env === 'dev') {
   logConfig.streams.push({
-    level: 'trace',
+    level: 'info',
     stream: prettyStdOut
   });
 }
-
 logConfig.streams.push({
   level: 'warn',
   stream: prettyStdOut
 });
 
 const parent = bunyan.createLogger(logConfig);
-let loggerCollector = [parent];
+const loggerCollector = [parent];
+process.once('SIGUSR2', () => {
+  loggerCollector.forEach(logger => logger.reopenFileStreams());
+});
 
-// Process "reloadLogs" pm2 command, use new .log file after log rotation
-process.on('SIGUSR2', _reloadLoggers);
-
-function getLogger(component, options) {
+const getLogger = (component, options) => {
   const logger = parent.child(Object.assign({
     component: component || 'Undefined component'
   }, options));
-
   loggerCollector.push(logger);
-
   return logger;
-}
-
-function _reloadLoggers() {
-  loggerCollector.forEach(logger => logger.reopenFileStreams());
-}
+};
 
 module.exports = getLogger;

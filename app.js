@@ -1,10 +1,7 @@
-require('./app/utils/initializeConfig');
+const initializer = require('./app/utils/initializer');
 
-const express = require('express');
-const bodyParser = require('body-parser');
+const server = require('./app/server');
 
-let app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
-
-require('./app/server')(app);
+initializer.appReady()
+  .then(server.initApp)
+  .then(server.startApp);
