@@ -4,6 +4,7 @@ const nconf = require('nconf');
 const morgan = require('morgan');
 
 const logger = require('./utils/logger')('server');
+const initRoutes = require('./utils/initRoutes.js');
 const { errorHandler, notFound } = require('./middleware/error_handler');
 
 const initApp = () => {
@@ -13,6 +14,8 @@ const initApp = () => {
   if (env === 'dev') {
     app.use(morgan(env));
   }
+
+  initRoutes(app);
 
   app.use(notFound);
   app.use(errorHandler);
