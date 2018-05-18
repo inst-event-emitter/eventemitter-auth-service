@@ -1,0 +1,10 @@
+{
+  "server": {
+    "port": 3002
+  },
+  "logger": {
+    "name": "event-emitter-auth",
+    "logsDir": "logs",
+    "streams": []
+  }
+}

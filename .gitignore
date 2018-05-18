@@ -1,5 +1,8 @@
-node_modules/
-npm-debug.log
-package-lock.json
-.idea/
-logs/
+node_modules/*
+
+.vscode/*
+.idea/*
+
+*.log*
+
+.env

@@ -1,0 +1,15 @@
+{
+  "logger": {
+    "streams": [{
+      "type": "rotating-file",
+      "path": "logs/event-emitter-auth.log",
+      "period": "1d",
+      "count": 7
+    }]
+  },
+  "postgreSql": {
+    "host": "172.29.10.21",
+    "port": 5432,
+    "database": "postgres"
+  }
+}
